@@ -1,5 +1,7 @@
 # gpu-fault-rca
 
+> **Moved.** This project now lives in [inference-qa-lab/gpu-fault-rca](https://github.com/su0xpj-bastion/inference-qa-lab/tree/main/gpu-fault-rca), where it is maintained and tested. This repository is archived and read-only.
+
 Fault injection and cross-layer root-cause analysis for a multi-node GPU inference deployment. A chaos harness injects hardware, driver, runtime and serving faults into a simulated 4-node × 8-GPU cluster. The cluster emits telemetry in the **real formats** an on-call engineer would pull: kernel `NVRM: Xid` lines, dcgm-exporter metrics, PyTorch NCCL watchdog logs, vLLM-style engine logs, NGINX access logs, and `kubectl get events -o json`. An RCA engine reads only those files. It names the root cause, the layer, the node/GPU/rank, the evidence lines it used, the blast radius and the action. A replay then proves the action actually recovers the service within its SLOs.
 
 The hard part is the red herrings. When GPU 3 on `gpu-node-1` falls off the bus, 15 *healthy* ranks across two nodes log NCCL watchdog timeouts, Kubernetes reports crash loops on both nodes, and both replicas breach the latency SLO. The one GPU at fault logs nothing at all. The engine blames that GPU.
